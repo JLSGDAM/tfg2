@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:textColor="@color/white"
+    tools:context=".Historico">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="417dp"
+        android:layout_height="612dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.312">
+
+
+        <TableLayout
+            android:id="@+id/tabla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/button4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow
+                android:id="@+id/header_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0079D6"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/nombre_column"
+                    android:layout_width="106dp"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center"
+                    android:text="Nombre"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tipo_column"
+                    android:layout_width="66dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Tipo"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ultimo_analisis_column"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center"
+                    android:text="Analisis"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/fecha_column"
+                    android:layout_width="126dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Fecha"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+            </TableRow>
+
+            <!-- Aquí se agregarán las filas de datos dinámicamente desde el código Java -->
+
+        </TableLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="156dp"
+        android:layout_height="61dp"
+        android:onClick="limpiarRegistros"
+        android:text="Limpiar registros"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="159dp"
+        android:layout_height="64dp"
+        android:onClick="volver"
+        android:text="Volver"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.795"
+        app:layout_constraintStart_toEndOf="@+id/button4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+</androidx.constraintlayout.widget.ConstraintLayout>
