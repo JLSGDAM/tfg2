@@ -28,6 +28,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+/**
+* Actividad principal de la aplicación.
+* Esta actividad permite al usuario navegar entre las diferentes
+* funcionalidades de la aplicación, como escanear archivos, escanear URLs,
+* ver el historial y acceder a la ayuda.
+*/
 public class MainActivity extends AppCompatActivity {
 
     //Implementar funcion que avise de que se necesita conexion a internet para funcionar
@@ -46,7 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
     protected static DatabaseHelper dbh;
 
-
+/**
+ * Método de creacion la actividad.
+ *
+ * @param savedInstanceState Si la actividad se reinicializa después de
+ *                           haber sido apagada, este Bundle contiene los
+ *                           datos más recientemente suministrados en
+ *                           onSaveInstanceState(Bundle). De lo contrario,
+ *                           está nulo.
+ */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +95,16 @@ public class MainActivity extends AppCompatActivity {
         // Inicializar el launcher para seleccionar archivos
             filePickerLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
                     this::onFilePicked);
-
-            //DATABASE
+        //DATABASE
         dbh = new DatabaseHelper(this);
-
-
-
 
     }
 
-
+/**
+ * Método llamado al hacer clic en el botón para escanear un archivo.
+ *
+ * @param view La vista que disparó el evento.
+ */
     public void EscanearArchivo(View view) {
 
         filePickerLauncher.launch("*/*"); // Selecciona todos los tipos de archivos
@@ -115,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 /**
  * Devuelve el nombre del archivo de la URI seleccionada
  * @param uri URI del archivo seleccionado
+ * @return El nombre del archivo.
  *
  * */
     private String getFileNameFromUri(Uri uri) {
@@ -153,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
 
-                // Crear la solicitud POST para enviar el archivo a VirusTotal
+                // Crear la solicitud POST para enviar el archivo a la API
                 Request request = new Request.Builder()
                         .url(VIRUS_TOTAL_API_URL)
                         .post(requestBody)
@@ -163,50 +178,68 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
                 try {
-                    // Ejecutar la solicitud y obtener la respuesta en un hilo de fondo
+                    // Ejecutar la solicitud y obtener la respuesta
                     Response response = client.newCall(request).execute();
 
-                    // Verificar si la solicitud fue exitosa
+                    // Verificar si la solicitud fue bien
                     if (response.isSuccessful()) {
-                        // Obtener el cuerpo de la respuesta como texto en un hilo de fondo
+                        // Obtener el cuerpo de la respuesta como texto
                         String responseBody = response.body().string();
                         Intent intent = new Intent(this, Scan.class);
                         intent.putExtra("respuesta", responseBody);
                         startActivity(intent);
 
                     } else {
-                        // Si la solicitud no fue exitosa, mostrar un mensaje de error en el hilo principal
+                        // Si la solicitud no fue bien, muestra un mensaje de error en el hilo principal
                         runOnUiThread(() -> Toast.makeText(this, "Error en la solicitud: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show());
                     }
                 } catch (IOException e) {
-                    // Capturar cualquier excepción de E/S en un hilo de fondo
+                    // Capturar excepción de E/S
                     e.printStackTrace();
                 }
             }).start();
         } else {
-            // Si la uri del archivo está vacía, mostrar un mensaje de error en el hilo principal
+            // Si la uri del archivo está vacía, muestra un mensaje de error
             runOnUiThread(() -> Toast.makeText(this, "No se ha seleccionado ningún archivo", Toast.LENGTH_SHORT).show());
         }
     }
 
-
+/**
+ * Inicia la actividad para escanear una URL.
+ *
+ * @param view La vista que desencadena este método.
+ */
     public void EscanearURL(View view) {
-Intent intent = new Intent(this, UrlScan.class);
-startActivity(intent);
+        Intent intent = new Intent(this, UrlScan.class);
+        startActivity(intent);
 
     }
 
+/**
+ * Abre la base de datos histórica.
+ *
+ * @param view La vista que desencadena este método.
+ */
     public void AbrirBDD(View view) {
 
         Intent intent = new Intent(this, Historico.class);
         startActivity(intent);
     }
-
+/**
+ * Abre la actividad de ayuda.
+ *
+ * @param view La vista que desencadena este método.
+ */
     public void helpPopUp(View view) {
         Intent intent = new Intent(this, Help.class);
         startActivity(intent);
     }
 
+/**
+ * Reproduce la animación.
+ *
+ * @param view La vista que desencadena este método.
+ */
 
     public void animacion(View view) {
 

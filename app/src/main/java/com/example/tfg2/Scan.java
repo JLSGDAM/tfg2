@@ -33,7 +33,9 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
+/**
+* Esta clase representa la actividad que muestra los resultados JSON del análisis de archivos o URLs.
+*/
 public class Scan extends AppCompatActivity {
 
     private TextView textView;
@@ -120,15 +122,13 @@ public class Scan extends AppCompatActivity {
 
 
 
-    /**
-     * FileReport con delay que espera una respuesta afirmativa del servidor
-     *
-     * @param id ID del archivo a escanear
-     * @param detalle  Variable de control que indica que tipo de analisis se hace
-     *
-     * */
-
-
+/**
+ * FileReport con delay que espera una respuesta afirmativa del servidor
+ *
+ * @param id ID del archivo a escanear
+ * @param detalle  Variable de control que indica que tipo de analisis se hace
+ *
+ * */
     private void fileReportDelay(String id, int detalle) {
         OkHttpClient client = new OkHttpClient();
 
@@ -206,7 +206,11 @@ public class Scan extends AppCompatActivity {
         });
     }
 
-
+/**
+ * Solicita un informe detallado del análisis.
+ *
+ * @param view La vista que desencadena este método.
+ */
     public void informeDetallado(View view) { cargarDatos(2); }
 
     public void Volver(View view) { finish(); }

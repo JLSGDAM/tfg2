@@ -18,7 +18,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
-
+/**
+* Esta clase representa la actividad que muestra el historial de análisis.
+*/
 public class Historico extends AppCompatActivity {
 
 
@@ -39,7 +41,9 @@ public class Historico extends AppCompatActivity {
 
 
     }
-
+/**
+ * Carga los datos del historial desde la base de datos y los muestra en la tabla.
+ */
     private void cargarBasedeDatos() {
         List<Modelo> modelos = mDatabaseHelper.obtenerTodosLosModelos(); // Obtener todos los modelos de la base de datos
         for (Modelo modelo : modelos) {
@@ -86,7 +90,11 @@ public class Historico extends AppCompatActivity {
             tabla.addView(row);
         }
     }
-
+/**
+ * Limpia todos los registros de la base de datos.
+ *
+ * @param view La vista que desencadena este método.
+ */
     public void limpiarRegistros(View view) {
         DatabaseHelper dbh = new DatabaseHelper(this);
         dbh.eliminarTodosLosRegistros();

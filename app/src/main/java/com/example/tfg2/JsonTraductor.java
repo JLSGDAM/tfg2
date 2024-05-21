@@ -14,46 +14,43 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Iterator;
 
+/**
+ * Esta clase proporciona métodos para traducir y analizar JSON y mostrar los resultados en un TextView.
+ */
 public class JsonTraductor {
 
     static TextView textView;
 
-
-
     private static String nombreURL;
-
-    public static String getNombreURL() {
-        return nombreURL;
-    }
 
     public void setNombreURL(String nombreURL) {
         JsonTraductor.nombreURL = nombreURL;
     }
 
 
-
     public JsonTraductor(TextView textview) {
         this.textView = textview;
     }
 
-    public  JsonTraductor(){
+/**
+ * Obtiene la fecha actual formateada en "dd/MM/yyyy".
+ *
+ * @return la fecha actual formateada.
+ */
+    public static String Fecha() {
 
-    }
-
-    public static String Fecha(){
-
-        // Obtener la fecha actual
         Date fechaActual = new Date();
-
-        // Crear un formato para la fecha
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
-        // Obtener la fecha formateada
         String fechaFormateada = formato.format(fechaActual);
 
         return fechaFormateada;
     }
-
+/**
+ * Obtiene el ID de un análisis a partir de un JSON.
+ *
+ * @param json el JSON del cual se obtendrá el ID.
+ * @return el ID del análisis.
+ */
 
     public String getId(String json) {
         try {
@@ -65,11 +62,16 @@ public class JsonTraductor {
         }
     }
 
-
+/**
+ * Traduce y muestra el análisis de un archivo en el TextView.
+ *
+ * @param jsonString el JSON que contiene los datos del análisis.
+ * @param detalle    el nivel de detalle del análisis (1 para simple, 2 para detallado).
+ */
     public void traducirAnalisis(String jsonString, int detalle) {
 
         //Analisis Simple
-        if (detalle ==1) {
+        if (detalle == 1) {
             try {
                 // Convertir el String JSON en un objeto JSONObject
                 JSONObject json = new JSONObject(jsonString);
@@ -99,7 +101,6 @@ public class JsonTraductor {
                 mostrarValor(sb, "type-unsupported", typeUnsupported);
 
 
-
                 // Establecer el texto en el TextView
                 textView.setText(sb.toString());
 
@@ -108,13 +109,13 @@ public class JsonTraductor {
                 Modelo modelo = new Modelo(MainActivity.fileName);
                 modelo.setTipo("Archivo");
                 modelo.setFecha(Fecha());
-                if (malicious == 0 || suspicious == 0){
+                if (malicious == 0 || suspicious == 0) {
                     modelo.setUltimoAnalisis("Limpio");
-                    } else if (malicious > 0 ) {
-                        modelo.setUltimoAnalisis("Malicioso");
-                         } else if (suspicious > 0) {
-                             modelo.setUltimoAnalisis("Sospechoso");
-                             }
+                } else if (malicious > 0) {
+                    modelo.setUltimoAnalisis("Malicioso");
+                } else if (suspicious > 0) {
+                    modelo.setUltimoAnalisis("Sospechoso");
+                }
 
 
                 MainActivity.dbh.agregarModelo(modelo);
@@ -165,7 +166,12 @@ public class JsonTraductor {
         }
     }
 
-
+/**
+ * Traduce y muestra el análisis de una URL en el TextView.
+ *
+ * @param jsonResponse el JSON que contiene los datos del análisis.
+ * @param detalle      el nivel de detalle del análisis (1 para simple, 2 para detallado).
+ */
     public static void traducirUrlAnalisis(String jsonResponse, int detalle) {
 
         JSONObject resultsObject;
@@ -201,9 +207,9 @@ public class JsonTraductor {
                 modelo.setFecha(Fecha());
 
 
-                if (malicious == 0 || suspicious == 0){
+                if (malicious == 0 || suspicious == 0) {
                     modelo.setUltimoAnalisis("Limpio");
-                } else if (malicious > 0 ) {
+                } else if (malicious > 0) {
                     modelo.setUltimoAnalisis("Malicioso");
                 } else if (suspicious > 0) {
                     modelo.setUltimoAnalisis("Sospechoso");
@@ -219,47 +225,58 @@ public class JsonTraductor {
                 e.printStackTrace();
             }
         } else {
-            try{
+            try {
                 JSONObject jsonObject = new JSONObject(jsonResponse);
                 JSONObject dataObject = jsonObject.getJSONObject("data");
                 JSONObject attributesObject = dataObject.getJSONObject("attributes");
                 resultsObject = attributesObject.getJSONObject("results");
                 JSONObject statsObject = attributesObject.getJSONObject("stats");
 
-            // Itera sobre los motores de análisis y sus resultados
-            JSONArray engineNames = resultsObject.names();
-            if (engineNames != null) {
-                for (int i = 0; i < engineNames.length(); i++) {
-                    String engineName = engineNames.getString(i);
-                    JSONObject engineResult = resultsObject.getJSONObject(engineName);
+                // Itera sobre los motores de análisis y sus resultados
+                JSONArray engineNames = resultsObject.names();
+                if (engineNames != null) {
+                    for (int i = 0; i < engineNames.length(); i++) {
+                        String engineName = engineNames.getString(i);
+                        JSONObject engineResult = resultsObject.getJSONObject(engineName);
 
-                    String method = engineResult.getString("method");
-                    String category = engineResult.getString("category");
-                    String result = engineResult.getString("result");
+                        String method = engineResult.getString("method");
+                        String category = engineResult.getString("category");
+                        String result = engineResult.getString("result");
 
-                    // Construye y muestra el mensaje con los detalles del análisis por motor
-                    StringBuilder engineMessage = new StringBuilder();
-                    engineMessage.append("Motor: ").append(engineName).append("\n");
-                    engineMessage.append("Método: ").append(method).append("\n");
-                    engineMessage.append("Categoría: ").append(category).append("\n");
-                    engineMessage.append("Resultado: ").append(result).append("\n");
+                        // Construye y muestra el mensaje con los detalles del análisis por motor
+                        StringBuilder engineMessage = new StringBuilder();
+                        engineMessage.append("Motor: ").append(engineName).append("\n");
+                        engineMessage.append("Método: ").append(method).append("\n");
+                        engineMessage.append("Categoría: ").append(category).append("\n");
+                        engineMessage.append("Resultado: ").append(result).append("\n");
 
-                    // Muestra el mensaje del motor de análisis
-                    textView.append("\n\n");
-                    textView.append(engineMessage.toString());
+                        // Muestra el mensaje del motor de análisis
+                        textView.append("\n\n");
+                        textView.append(engineMessage.toString());
+                    }
                 }
-            }
 
-        } catch(JSONException e){
-            e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
-    }
 
-    private static void mostrarValor(StringBuilder sb, String nombre, int valor){
+ /** Muestra un valor en el StringBuilder con el formato "nombre: valor".
+  *
+  *  @param sb    el StringBuilder en el que se añadirá el valor.
+  * @param nombre el nombre del valor.
+  * @param valor el valor a mostrar.
+  */
+    private static void mostrarValor(StringBuilder sb, String nombre, int valor) {
         sb.append(nombre).append(": ").append(valor).append("\n");
     }
-
+/**
+ * Obtiene el nombre del sitio a partir de una URL.
+ *
+ * @param url la URL del sitio.
+ * @return el nombre del sitio.
+ */
     public static String obtenerNombreSitio(String url) {
         try {
             URI uri = new URI(url);

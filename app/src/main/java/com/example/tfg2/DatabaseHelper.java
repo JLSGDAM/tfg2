@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+* Clase auxiliar para interactuar con la base de datos SQLite.
+*/
 public class DatabaseHelper extends SQLiteOpenHelper {
     // Nombre de la base de datos
     private static final String DATABASE_NAME = "VTDB.db";
@@ -29,7 +31,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
+/**
+ * Método llamado cuando se crea la base de datos por primera vez.
+ * @param db La base de datos.
+ */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Se ejecuta al crear la base de datos
@@ -42,7 +47,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ")";
         db.execSQL(CREATE_TABLE);
     }
-
+/**
+ * Método UPDATE
+ * @param db La base de datos.
+ * @param oldVersion La antigua versión de la base de datos.
+ * @param newVersion La nueva versión de la base de datos.
+ */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Se ejecuta al actualizar la base de datos (cambiar la versión)
@@ -51,7 +61,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Método para agregar un nuevo registro
+/**
+ * Agrega un nuevo modelo a la base de datos.
+ * @param modelo El modelo a agregar.
+ * @return El ID de la fila recién insertada.
+ */
     public long agregarModelo(Modelo modelo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -67,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // Método para obtener un modelo por su ID
+    // Método para obtener un modelo por su ID, implementado por si acaso. SIN USO
     public Modelo obtenerModelo(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -82,7 +96,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return modelo;
     }
 
-    // Método para obtener todos los modelos
+    /**
+     * Recupera todos los registros
+     *
+     * @return Una lista con todos los registros
+     * */
     public List<Modelo> obtenerTodosLosModelos() {
         List<Modelo> modeloList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_NAME;
@@ -100,7 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return modeloList;
     }
 
-    // Método para actualizar un modelo
+    // Método UPDATE. SIN USO
     public int actualizarModelo(Modelo modelo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -113,7 +131,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(modelo.getNombre())});
     }
 
-    // Método para eliminar un modelo
+    // Método DELETE. SIN USO
     public void eliminarModelo(Modelo modelo) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, KEY_ID + " = ?",
@@ -121,16 +139,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Método para obtener la cantidad de modelos
-    public int obtenerCantidadModelos() {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
-    }
 
+/**
+ * Limpia la BDD
+ *
+ * */
     public void eliminarTodosLosRegistros() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);

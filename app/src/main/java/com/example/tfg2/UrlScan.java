@@ -19,9 +19,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
+/**
+* Esta clase representa la actividad para escanear URLs.
+*/
 public class UrlScan extends AppCompatActivity {
-
 
     public static String nombreURL;
     private static EditText et ;
@@ -42,13 +43,21 @@ public class UrlScan extends AppCompatActivity {
             return insets;
         });
     }
-
+/**
+ * Recupera la URL introducida por el usuario.
+ *
+ * @return  La URL introducida.
+ */
     protected static String nombreURL(){
             String url = String.valueOf(et.getText());
 
         return url;
     }
-
+/**
+ * Captura la URL introducida por el usuario y la envía para su escaneo.
+ *
+ * @param url La URL a escanear.
+ */
     private void capturarURL(String url) {
         // Verificar que la URL no esté vacía
         if (url != null && !url.isEmpty()) {
@@ -97,7 +106,11 @@ public class UrlScan extends AppCompatActivity {
         }
     }
 
-
+/**
+ * Método llamado cuando se presiona el botón "Mandar URL".
+ *
+ * @param view La vista que desencadena este método.
+ */
     public void mandarURL(View view) {
         capturarURL(nombreURL());
     }
