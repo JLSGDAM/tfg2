@@ -1,7 +1,7 @@
-package com.example.tfg2;
+package com.example.tfg2.Controlador;
 
 import static com.example.tfg2.R.*;
-import static com.example.tfg2.UrlScan.nombreURL;
+import static com.example.tfg2.Controlador.UrlScan.nombreURL;
 
 
 import android.annotation.SuppressLint;
@@ -22,6 +22,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.tfg2.Modelo.Modelo;
+import com.example.tfg2.R;
+import com.example.tfg2.Vista.JsonTraductor;
+import com.example.tfg2.Vista.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

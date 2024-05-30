@@ -1,10 +1,8 @@
-package com.example.tfg2;
+package com.example.tfg2.Vista;
 
 import static com.example.tfg2.R.*;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
@@ -13,9 +11,10 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.example.tfg2.Controlador.DatabaseHelper;
+import com.example.tfg2.Modelo.Modelo;
+import com.example.tfg2.R;
 
 import java.util.List;
 /**

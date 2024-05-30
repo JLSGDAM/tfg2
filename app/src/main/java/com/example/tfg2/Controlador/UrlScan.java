@@ -1,4 +1,4 @@
-package com.example.tfg2;
+package com.example.tfg2.Controlador;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.tfg2.R;
 
 import java.io.IOException;
 
@@ -48,7 +50,7 @@ public class UrlScan extends AppCompatActivity {
  *
  * @return  La URL introducida.
  */
-    protected static String nombreURL(){
+    public static String nombreURL(){
             String url = String.valueOf(et.getText());
 
         return url;

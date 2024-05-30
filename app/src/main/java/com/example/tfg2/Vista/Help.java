@@ -1,4 +1,4 @@
-package com.example.tfg2;
+package com.example.tfg2.Vista;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.tfg2.R;
 
 public class Help extends AppCompatActivity {
 

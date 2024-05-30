@@ -1,7 +1,9 @@
-package com.example.tfg2;
+package com.example.tfg2.Vista;
 
-import android.os.Build;
 import android.widget.TextView;
+
+import com.example.tfg2.Modelo.Modelo;
+import com.example.tfg2.Controlador.UrlScan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,7 +12,6 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Iterator;
 

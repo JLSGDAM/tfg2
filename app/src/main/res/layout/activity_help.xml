@@ -9,7 +9,7 @@
     android:background="@drawable/background"
     android:clickable="true"
     android:onClick="salir"
-    tools:context=".Help">
+    tools:context=".Vista.Help">
 
     <TextView
         android:id="@+id/textView4"

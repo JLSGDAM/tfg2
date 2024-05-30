@@ -19,22 +19,22 @@
         android:theme="@style/Theme.Tfg2"
         tools:targetApi="31">
         <activity
-            android:name=".Help"
+            android:name=".Vista.Help"
             android:exported="false" />
         <activity
-            android:name=".Historico"
+            android:name=".Vista.Historico"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UrlScan"
+            android:name=".Controlador.UrlScan"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Scan"
+            android:name=".Controlador.Scan"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Vista.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

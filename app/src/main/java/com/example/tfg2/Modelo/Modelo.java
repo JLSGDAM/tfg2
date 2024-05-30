@@ -1,4 +1,4 @@
-package com.example.tfg2;
+package com.example.tfg2.Modelo;
 
 public class Modelo {
 
