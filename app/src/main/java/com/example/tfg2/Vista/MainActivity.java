@@ -1,9 +1,14 @@
 package com.example.tfg2.Vista;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -42,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     //Implementar funcion que avise de que se necesita conexion a internet para funcionar
 
 
-    // Historial en SQLITE3??
     public static final String VT_API_ANALYSIS = "https://www.virustotal.com/api/v3/analyses/";
     private ActivityResultLauncher<String> filePickerLauncher;
     private static  String apiKey ="";
@@ -100,6 +104,17 @@ public class MainActivity extends AppCompatActivity {
                     this::onFilePicked);
         //DATABASE
         dbh = new DatabaseHelper(this);
+
+
+        if(!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(), "Necesitas conexión a Internet", Toast.LENGTH_SHORT).show();
+            disableButtons();
+        } else {
+            enableButtons();
+        }
+
+
+
 
     }
 
@@ -248,5 +263,38 @@ public class MainActivity extends AppCompatActivity {
 
         LottieAnimationView animaView = findViewById(R.id.animationView);
         animaView.playAnimation();
+
     }
+
+    /**
+     * Comprueba si hay conexión a Internet.
+     *
+     * @return true si hay conexión a Internet, false en caso contrario.
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+                return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            } else {
+                NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+                return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+            }
+        }
+        return false;
+    }
+
+    private void disableButtons() {
+        b1.setEnabled(false);
+        b2.setEnabled(false);
+        b3.setEnabled(false);
+    }
+
+    private void enableButtons() {
+        b1.setEnabled(true);
+        b2.setEnabled(true);
+        b3.setEnabled(true);
+    }
+
 }

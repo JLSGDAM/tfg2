@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:clickable="true"
+    android:focusable="true"
     android:onClick="salir"
     tools:context=".Vista.Help">
 
@@ -19,7 +20,7 @@
         android:text="Desarrollado por Jose Luis Sánchez Garbín ® como TFG. Prohibido su uso Comercial. i.E.S. Celia viñas 2024."
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.544"
@@ -38,29 +39,32 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/space"
-        app:lottie_speed="1" />
+        app:lottie_speed="1"
+        />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/starjedi"
-        android:text="Esta App utiliza una clave publica de la api de virusTotal"
+        android:onClick="goTO"
+        android:text="Esta App utiliza una clave publica de la api de virusTotal. Accede a su Politica de Privacidad"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="355dp"
         android:layout_height="62dp"
         android:fontFamily="@font/russo_one"
+        android:onClick="copyToClip"
         android:text="Contacto: jlsgdam93@gmail.com"
         android:textAlignment="center"
         android:textColor="@color/white"

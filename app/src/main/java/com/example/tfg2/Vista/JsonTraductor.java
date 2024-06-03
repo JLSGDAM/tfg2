@@ -20,7 +20,7 @@ import java.util.Iterator;
  */
 public class JsonTraductor {
 
-    static TextView textView;
+    private static TextView textView;
 
     private static String nombreURL;
 
@@ -110,7 +110,7 @@ public class JsonTraductor {
                 Modelo modelo = new Modelo(MainActivity.fileName);
                 modelo.setTipo("Archivo");
                 modelo.setFecha(Fecha());
-                if (malicious == 0 || suspicious == 0) {
+                if (malicious == 0 && suspicious == 0) {
                     modelo.setUltimoAnalisis("Limpio");
                 } else if (malicious > 0) {
                     modelo.setUltimoAnalisis("Malicioso");
@@ -208,7 +208,7 @@ public class JsonTraductor {
                 modelo.setFecha(Fecha());
 
 
-                if (malicious == 0 || suspicious == 0) {
+                if (malicious == 0 && suspicious == 0) {
                     modelo.setUltimoAnalisis("Limpio");
                 } else if (malicious > 0) {
                     modelo.setUltimoAnalisis("Malicioso");

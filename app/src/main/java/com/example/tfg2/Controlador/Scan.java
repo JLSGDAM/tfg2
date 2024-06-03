@@ -3,7 +3,6 @@ package com.example.tfg2.Controlador;
 import static com.example.tfg2.R.*;
 import static com.example.tfg2.Controlador.UrlScan.nombreURL;
 
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,28 +30,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
 /**
-* Esta clase representa la actividad que muestra los resultados JSON del análisis de archivos o URLs.
-*/
+ * Esta clase representa la actividad que muestra los resultados JSON del análisis de archivos o URLs.
+ */
 public class Scan extends AppCompatActivity {
 
     private TextView textView;
     private String cuerpoRespuesta, cuerpoRespuestaURL;
-
-
     private static ProgressBar pb;
-
     private static String apiKey = "";
     private ImageView gif;
-    private int tiempo= 0;
-
+    private int tiempo = 0;
     private Modelo modelo;
+    private List<Call> calls = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -78,61 +77,36 @@ public class Scan extends AppCompatActivity {
         });
     }
 
-    private void cargarDatos(int detalle){
+    private void cargarDatos(int detalle) {
         Intent intent = getIntent();
-        if (intent != null ) {
+        if (intent != null) {
             cuerpoRespuesta = intent.getStringExtra("respuesta");
             cuerpoRespuestaURL = intent.getStringExtra("respuestaURL");
 
-            if (cuerpoRespuesta != null){
-                // Actualizar la interfaz de usuario en el hilo principal
+            if (cuerpoRespuesta != null) {
                 runOnUiThread(() -> {
-
-                    // traduccion de la respuesta
                     JsonTraductor traductor = new JsonTraductor(textView);
-                    //Aislamiento de la id del archivo
                     String idFile = traductor.getId(cuerpoRespuesta);
-                    //Log.d("IDFILE", idFile);
-
-                    //Report del archivo
-                    fileReportDelay(idFile,detalle);
+                    fileReportDelay(idFile, detalle);
                 });
-            }else{
+            } else {
                 Log.d("Error", "Extra = URL");
             }
 
-            if (cuerpoRespuestaURL != null){
-                // Actualizar la interfaz de usuario en el hilo principal
+            if (cuerpoRespuestaURL != null) {
                 runOnUiThread(() -> {
-
-                    // traduccion de la respuesta
                     JsonTraductor traductor = new JsonTraductor(textView);
-                    //Aislamiento de la id del archivo
                     String idURL = traductor.getId(cuerpoRespuestaURL);
-                    //Log.d("IDURL", idURL);
-
-                    //Report del archivo
-                    urlReport(idURL,detalle);
+                    urlReport(idURL, detalle);
                 });
-            }else{
+            } else {
                 Log.d("Error", "Extra = file ");
             }
-
-        }else{
+        } else {
             Log.d("Error", "Fallo del intent");
         }
-
     }
 
-
-
-/**
- * FileReport con delay que espera una respuesta afirmativa del servidor
- *
- * @param id ID del archivo a escanear
- * @param detalle  Variable de control que indica que tipo de analisis se hace
- *
- * */
     private void fileReportDelay(String id, int detalle) {
         OkHttpClient client = new OkHttpClient();
 
@@ -143,20 +117,21 @@ public class Scan extends AppCompatActivity {
                 .addHeader("x-apikey", apiKey)
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
+        Call call = client.newCall(request);
+        calls.add(call);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                calls.remove(call);
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Error en la solicitud: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
 
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
-
+                calls.remove(call);
                 if (response.isSuccessful()) {
-                    tiempo ++;
+                    tiempo++;
                     String responseBody = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseBody);
@@ -165,31 +140,24 @@ public class Scan extends AppCompatActivity {
                                 .getString("status");
                         Log.d("STATUS", status);
 
-
-
                         if (status.equals("queued")) {
-
                             Log.d("TIEMPO", String.valueOf(tiempo));
                             runOnUiThread(() -> {
                                 pb.setVisibility(View.VISIBLE);
                                 Toast.makeText(getApplicationContext(), "Petición en cola, esto puede tardar algunos minutos...", Toast.LENGTH_SHORT).show();
                             });
 
-                            // Esperar 5 segundos y volver a comprobar el estado
                             try {
                                 Thread.sleep(5000);
-
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
 
-                            // Carga de GIF
                             if (tiempo == 2) {
                                 runOnUiThread(() -> mostrarGIF());
                             }
 
                             fileReportDelay(id, detalle);
-
                         } else {
                             runOnUiThread(() -> {
                                 pb.setVisibility(View.GONE);
@@ -197,7 +165,6 @@ public class Scan extends AppCompatActivity {
                                 JsonTraductor traductor = new JsonTraductor(textView);
                                 traductor.traducirAnalisis(responseBody, detalle);
                                 tiempo = 0;
-                               // Log.d("simple", responseBody);
                             });
                         }
                     } catch (JSONException e) {
@@ -210,23 +177,20 @@ public class Scan extends AppCompatActivity {
         });
     }
 
-/**
- * Solicita un informe detallado del análisis.
- *
- * @param view La vista que desencadena este método.
- */
-    public void informeDetallado(View view) { cargarDatos(2); }
+    public void informeDetallado(View view) {
+        cargarDatos(2);
+    }
 
-    public void Volver(View view) { finish(); }
+    public void Volver(View view) {
+        finish();
+    }
 
     private void mostrarGIF() {
         pb.setVisibility(View.INVISIBLE);
         gif.setVisibility(View.VISIBLE);
     }
 
-
     private void urlReport(String id, int detalle) {
-
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -236,21 +200,23 @@ public class Scan extends AppCompatActivity {
                 .addHeader("x-apikey", apiKey)
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
+        Call call = client.newCall(request);
+        calls.add(call);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                calls.remove(call);
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Error en la solicitud: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
 
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                calls.remove(call);
                 if (response.isSuccessful()) {
                     tiempo++;
                     String responseBody = response.body().string();
                     try {
-                        // Parsea la respuesta JSON
                         JSONObject json = new JSONObject(responseBody);
                         String status = json.getJSONObject("data")
                                 .getJSONObject("attributes")
@@ -263,21 +229,17 @@ public class Scan extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Petición en cola, esto puede tardar algunos minutos...", Toast.LENGTH_SHORT).show();
                             });
 
-                            // Esperar 5 segundos y volver a comprobar el estado
                             try {
                                 Thread.sleep(5000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
 
-                            // Carga de GIF
                             if (tiempo == 2) {
                                 runOnUiThread(() -> mostrarGIF());
                             }
 
-                            // Vuelve a llamar al método
                             urlReport(id, detalle);
-
                         } else {
                             runOnUiThread(() -> {
                                 pb.setVisibility(View.GONE);
@@ -298,5 +260,13 @@ public class Scan extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (Call call : calls) {
+            if (!call.isCanceled()) {
+                call.cancel();
+            }
+        }
+    }
 }
