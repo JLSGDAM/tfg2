@@ -10,7 +10,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:textColor="@color/white"
-    tools:context=".Vista.Historico">
+    tools:context=".vista.Historico">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="417dp"

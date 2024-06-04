@@ -10,7 +10,7 @@
     android:clickable="true"
     android:focusable="true"
     android:onClick="salir"
-    tools:context=".Vista.Help">
+    tools:context=".vista.Help">
 
     <TextView
         android:id="@+id/textView4"
