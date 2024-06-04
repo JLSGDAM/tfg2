@@ -1,4 +1,4 @@
-package com.example.tfg2.Controlador;
+package com.example.tfg2.vista;
 
 import android.content.Intent;
 import android.os.Bundle;

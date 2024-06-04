@@ -1,4 +1,4 @@
-package com.example.tfg2.Vista;
+package com.example.tfg2.vista;
 
 import static com.example.tfg2.R.*;
 

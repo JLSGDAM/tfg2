@@ -1,4 +1,4 @@
-package com.example.tfg2.Vista;
+package com.example.tfg2.vista;
 
 
 import android.content.Context;
@@ -23,8 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.tfg2.Controlador.DatabaseHelper;
 import com.example.tfg2.R;
-import com.example.tfg2.Controlador.Scan;
-import com.example.tfg2.Controlador.UrlScan;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,20 +42,22 @@ import okhttp3.Response;
 */
 public class MainActivity extends AppCompatActivity {
 
-    //Implementar funcion que avise de que se necesita conexion a internet para funcionar
-
-
+    //URL analisis
     public static final String VT_API_ANALYSIS = "https://www.virustotal.com/api/v3/analyses/";
-    private ActivityResultLauncher<String> filePickerLauncher;
+    public ActivityResultLauncher filePickerLauncher;
     private static  String apiKey ="";
     //URL subida
     private static final String VIRUS_TOTAL_API_URL = "https://www.virustotal.com/api/v3/files";
-    //URL analisis
-    private Button b1,b2,b3;
-    private ImageView iv;
-    protected static String fileName;
 
-    protected static DatabaseHelper dbh;
+    public Button b1;
+    public Button b2;
+    public Button b3;
+    public ImageView iv;
+    public static String fileName;
+
+    public static DatabaseHelper dbh;
+
+    public OkHttpClient client = new OkHttpClient();
 
 /**
  * Método de creacion la actividad.
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
  */
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
  * @param fileUri URI del archivo
  *
  * */
-    private void onFilePicked(Uri fileUri){
+public void onFilePicked(Uri fileUri){
         if (fileUri != null) {
             // Obtencion de URI del archivo seleccionado
             fileName = getFileNameFromUri(fileUri);
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
  * @return El nombre del archivo.
  *
  * */
-    private String getFileNameFromUri(Uri uri) {
+public String getFileNameFromUri(Uri uri) {
         String fileName = null;
         String[] projection = {MediaStore.Images.Media.DISPLAY_NAME};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -167,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
  *
  * @param fileUri Uri del archivo seleccionado
  * */
-    private void capturarArchivo(Uri fileUri) {
+public void capturarArchivo(Uri fileUri) {
         // Verificar que la uri del archivo no esté vacía
         if (fileUri != null) {
             // Crear un cliente OkHttp en un hilo de fondo
             new Thread(() -> {
-                OkHttpClient client = new OkHttpClient();
+                // client = new OkHttpClient();
 
                 // Crear el cuerpo de la solicitud multipart para enviar el archivo
                 RequestBody requestBody = null;
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return true si hay conexión a Internet, false en caso contrario.
      */
-    private boolean isNetworkAvailable() {
+    public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -285,13 +285,13 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void disableButtons() {
+    public void disableButtons() {
         b1.setEnabled(false);
         b2.setEnabled(false);
         b3.setEnabled(false);
     }
 
-    private void enableButtons() {
+    public void enableButtons() {
         b1.setEnabled(true);
         b2.setEnabled(true);
         b3.setEnabled(true);

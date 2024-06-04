@@ -1,9 +1,10 @@
-package com.example.tfg2.Vista;
+package com.example.tfg2.Controlador;
 
 import android.widget.TextView;
 
 import com.example.tfg2.Modelo.Modelo;
-import com.example.tfg2.Controlador.UrlScan;
+import com.example.tfg2.vista.MainActivity;
+import com.example.tfg2.vista.UrlScan;
 
 import org.json.JSONArray;
 import org.json.JSONException;
